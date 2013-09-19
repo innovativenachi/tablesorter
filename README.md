@@ -20,7 +20,6 @@ The first step was to download the extension and move it inside your <code>appli
 The second step was in your controller created after CRUD. Let's assume you have a controller named PostsController in <code>application/protected/controllers/PostsController.php</code>. Go to actionAdmin() method inside the controller, the default method should look like this below. 
 
 ~~~
-[php]
 public function actionAdmin()
 {
 	$model=new Posts('search');
@@ -36,7 +35,6 @@ public function actionAdmin()
 
 Modify it as like here.
 ~~~
-[php]
 public function actionAdmin()
 {
 	$records=Posts::model()->findAll();
@@ -50,7 +48,6 @@ public function actionAdmin()
 The final step was in your view, go to <code>application/protected/views/posts/admin.php</code>. Let's assume we have fields <i>title, description, content and user_id</i> fields. The default grid view should like this.
 
 ~~~
-[php]
 $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'posts-grid',
 	'dataProvider'=>$model->search(),
@@ -73,7 +70,6 @@ Modify it with our table sorter extension below.
 
 
 ~~~
-[php]
 $this->widget('application.extensions.tablesorter.Sorter', array(
 	'data'=>$records,
 	'columns'=>array(
@@ -91,7 +87,6 @@ We can set the filter as <b>text box, select box, empty</b>. We need to pass ano
 
 
 ~~~
-[php]
 $this->widget('application.extensions.tablesorter.Sorter', array(
 	'data'=>$records,
 	'columns'=>array(
