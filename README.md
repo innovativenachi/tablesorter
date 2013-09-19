@@ -1,3 +1,5 @@
+#Tablesorter - YII Extension
+
 jQuery tablesorter extension for YII, for turning a standard grid view into a sortable table without page refreshes. The main aspects of this extension are given below.
 
 - Fields will be listed as similar to gridview with unique bootstrap style.
