@@ -18,28 +18,28 @@ class Sorter extends CWidget
         'data'    => null,
         'columns'   => null,
         'filters'   => null,
-    );
+    	);
     
-    public function init()
+    	public function init()
 	{
 		//Table sorter was intialized
 	}
 	
 	//Magic function for get parameters
 	public function __get($name) {
-        if(array_key_exists($name, $this->_options)) {
-            return $this->_options[$name];
-        }
-        return parent::__get($name);
-    }
+        	if(array_key_exists($name, $this->_options)) {
+            		return $this->_options[$name];
+        	}
+        	return parent::__get($name);
+    	}
 	
 	//Magic function for setting parameters
-    public function __set($name, $value) {
-        if(array_key_exists($name, $this->_options)) {
-            return $this->_options[$name] = $value;
-        }
-        return parent::__set($name, $value);
-    }
+    	public function __set($name, $value) {
+        	if(array_key_exists($name, $this->_options)) {
+            		return $this->_options[$name] = $value;
+        	}
+        	return parent::__set($name, $value);
+    	}
 	
 	//Register CSS and Jquery
 	public function registerClientScript()
