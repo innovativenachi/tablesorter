@@ -18,36 +18,36 @@ class Sorter extends CWidget
         'data'    => null,
         'columns'   => null,
         'filters'   => null,
-    	);
+    );
     
-    	public function init()
+    public function init()
 	{
 		//Table sorter was intialized
 	}
 	
 	//Magic function for get parameters
 	public function __get($name) {
-        	if(array_key_exists($name, $this->_options)) {
-            		return $this->_options[$name];
-        	}
-        	return parent::__get($name);
-    	}
+        if(array_key_exists($name, $this->_options)) {
+            return $this->_options[$name];
+        }
+        return parent::__get($name);
+    }
 	
 	//Magic function for setting parameters
-    	public function __set($name, $value) {
-        	if(array_key_exists($name, $this->_options)) {
-            		return $this->_options[$name] = $value;
-        	}
-        	return parent::__set($name, $value);
-    	}
+    public function __set($name, $value) {
+        if(array_key_exists($name, $this->_options)) {
+            return $this->_options[$name] = $value;
+        }
+        return parent::__set($name, $value);
+    }
 	
 	//Register CSS and Jquery
 	public function registerClientScript()
 	{
 		$bu = Yii::app()->assetManager->publish(dirname(__FILE__) . '/assets/');
-                $cs = Yii::app()->clientScript;
-                //Intialize CSS
-                $cs->registerCssFile($bu . '/css/tablesorter.css');
+        $cs = Yii::app()->clientScript;
+        //Intialize CSS
+        $cs->registerCssFile($bu . '/css/tablesorter.css');
 		$cs->registerCssFile($bu . '/css/tablesorter.pager.css');
 		$cs->registerCssFile($bu . '/css/bootstrap.css');
 		//Intialize Jquery
@@ -66,6 +66,17 @@ class Sorter extends CWidget
 		$count=count($datas);
 		echo "Totaly ".$count." results have been found";
 		
+		echo '//delete by using post method
+		     <script>
+			 function del_data(url,data) {
+				var result = confirm("Are you sure want to delete?");
+				if (result==true) {
+					$.post( url );
+					location.reload();
+				}	
+			 }
+			 </script>';
+		
 		//Table start
 		echo "<table class='tablesorter-bootstrap'>\n";
 		//Table head start
@@ -75,6 +86,12 @@ class Sorter extends CWidget
 		$i=0;
 		foreach($this->columns as $column)
 		{
+			//checking whether the column name is customized
+			if(is_array($column))
+			{
+				$column=$column['header'];	
+			}
+			
 			$find = explode(".", $column);
 			if(count($find)>1) {
 			echo "<th class='".$filters[$i]."'>".ucfirst($find[1])."</th>";	
@@ -96,6 +113,12 @@ class Sorter extends CWidget
 			echo "<tr>\n";
 			foreach($this->columns as $column)
 			{
+				//checking whether the column name is customized
+				if(is_array($column))
+				{
+					$column=$column['value'];	
+				}
+				
 				$find = explode(".", $column);
 				if(count($find)>1) {
 					echo "<td>".$data->$find[0]->$find[1]."</td>";	
@@ -107,11 +130,12 @@ class Sorter extends CWidget
 			//View, Edit and Delete Urls
 			$view_url=Yii::app()->createAbsoluteUrl($class.'/view',array('id'=>$data->id));
 			$edit_url=Yii::app()->createAbsoluteUrl($class.'/update',array('id'=>$data->id));
-			$delete_url=Yii::app()->createAbsoluteUrl('delete',array('id'=>$data->id));
+			$delete_url='"'.Yii::app()->createAbsoluteUrl($class.'/delete',array('id'=>$data->id)).'"';
+			$del_data='"'.$data->id.'"';
 			//View, Edit, Delete Icons (bootstrap)
 			echo "<td>   <a class='btn btn-small' href='".$view_url."'><i class='icon-search'></i></a>
 				  &nbsp; <a class='btn btn-small' href='".$edit_url."'><i class='icon-edit'></i></a>
-				  &nbsp; <a class='btn btn-small' href='".$delete_url."'><i class='icon-trash'></i></a>
+				  &nbsp; <a class='btn btn-small' href='javascript:void(0);' onclick='del_data(".$delete_url.");'><i class='icon-trash'></i></a>
 				  </td>";
 			echo "</tr>\n";
 		}
