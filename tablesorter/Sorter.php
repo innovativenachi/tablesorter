@@ -17,6 +17,7 @@ class Sorter extends CWidget
 	private $_options = array(
         'data'    => null,
         'columns'   => null,
+        'buttons' => null,
         'filters'   => null,
     );
     
@@ -101,7 +102,16 @@ class Sorter extends CWidget
 			
 			$i++;
 		}
-		echo "<th class='filter-false'>Actions</th>";
+		
+		//Disabling action
+		$buttons=$this->buttons;
+		if(isset($buttons[0]['action'])) {
+			if($buttons[0]['action']!='disable')
+			echo "<th class='filter-false'>Actions</th>";
+		} else { 
+			echo "<th class='filter-false'>Actions</th>";
+		}	
+		
 		echo "</tr>\n";
 		echo "</thead>\n";
 		//Table head end
@@ -133,11 +143,64 @@ class Sorter extends CWidget
 			$delete_url='"'.Yii::app()->createAbsoluteUrl($class.'/delete',array('id'=>$data->id)).'"';
 			$del_data='"'.$data->id.'"';
 			//View, Edit, Delete Icons (bootstrap)
-			echo "<td>   <a class='btn btn-small' href='".$view_url."'><i class='icon-search'></i></a>
-				  &nbsp; <a class='btn btn-small' href='".$edit_url."'><i class='icon-edit'></i></a>
-				  &nbsp; <a class='btn btn-small' href='javascript:void(0);' onclick='del_data(".$delete_url.");'><i class='icon-trash'></i></a>
-				  </td>";
-			echo "</tr>\n";
+			if(isset($buttons[0]['action'])) {
+				if($buttons[0]['action']!='disable')
+				{
+					if(isset($buttons))
+					{
+						echo "<td>";   
+						if(isset($buttons[0]['view'])) {
+							if($buttons[0]['view']!='disable')
+							echo "<a class='btn btn-small' href='".$view_url."'><i class='icon-search'></i></a> &nbsp;"; 
+						} else {
+							echo "<a class='btn btn-small' href='".$view_url."'><i class='icon-search'></i></a> &nbsp;"; 
+						}
+						if(isset($buttons[0]['edit'])) {
+							if($buttons[0]['edit']!='disable')
+							echo "<a class='btn btn-small' href='".$edit_url."'><i class='icon-edit'></i></a>  &nbsp;"; 
+						} else {
+							echo "<a class='btn btn-small' href='".$edit_url."'><i class='icon-edit'></i></a>  &nbsp;"; 
+						}	
+						if(isset($buttons[0]['delete'])) {
+							if($buttons[0]['delete']!='disable')
+							echo "<a class='btn btn-small' href='javascript:void(0);' onclick='del_data(".$delete_url.");'><i class='icon-trash'></i></a>";
+						} else {
+							echo "<a class='btn btn-small' href='javascript:void(0);' onclick='del_data(".$delete_url.");'><i class='icon-trash'></i></a>";
+						}	
+						echo "</td>";
+					} 
+					else //default
+					{
+						echo "<td>   <a class='btn btn-small' href='".$view_url."'><i class='icon-search'></i></a>
+							  &nbsp; <a class='btn btn-small' href='".$edit_url."'><i class='icon-edit'></i></a>
+							  &nbsp; <a class='btn btn-small' href='javascript:void(0);' onclick='del_data(".$delete_url.");'><i class='icon-trash'></i></a>
+							  </td>";
+					}
+				}	
+			} else {
+				echo "<td>";   
+				if(isset($buttons[0]['view'])) {
+					if($buttons[0]['view']!='disable')
+					echo "<a class='btn btn-small' href='".$view_url."'><i class='icon-search'></i></a> &nbsp;"; 
+				} else {
+					echo "<a class='btn btn-small' href='".$view_url."'><i class='icon-search'></i></a> &nbsp;"; 
+				}
+				if(isset($buttons[0]['edit'])) {
+					if($buttons[0]['edit']!='disable')
+					echo "<a class='btn btn-small' href='".$edit_url."'><i class='icon-edit'></i></a>  &nbsp;"; 
+				} else {
+					echo "<a class='btn btn-small' href='".$edit_url."'><i class='icon-edit'></i></a>  &nbsp;"; 
+				}	
+				if(isset($buttons[0]['delete'])) {
+					if($buttons[0]['delete']!='disable')
+					echo "<a class='btn btn-small' href='javascript:void(0);' onclick='del_data(".$delete_url.");'><i class='icon-trash'></i></a>";
+				} else {
+					echo "<a class='btn btn-small' href='javascript:void(0);' onclick='del_data(".$delete_url.");'><i class='icon-trash'></i></a>";
+				}	
+				echo "</td>";
+			}
+				
+			echo "</tr>\n";	
 		}
 		echo "</tbody>\n";
 		//Table body end
